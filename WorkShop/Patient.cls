@@ -1,8 +1,7 @@
 Include WorkShop.macros
 
-Class WorkShop.Patient Extends (%Persistent, %Library.Populate)
+Class WorkShop.Patient Extends (%Persistent, %Library.Populate,%XML.Adaptor)
 {
-
 Property name As %String;
 
 ClassMethod showInfo() As %Status
