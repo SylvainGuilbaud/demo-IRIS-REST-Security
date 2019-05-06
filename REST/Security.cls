@@ -5,10 +5,10 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
 <Route Url="/" Method="GET" Call="version" Cors="true"/>
+<Route Url="/users" Method="GET" Call="GetUsers" Cors="true"/>
 <Route Url="/users" Method="POST" Call="CreateUser" Cors="true"/>
 <Route Url="/users" Method="PUT" Call="ModifyUser" Cors="true"/>
 <Route Url="/users" Method="DELETE" Call="DeleteUser" Cors="true"/>
-<Route Url="/users" Method="GET" Call="GetUsers" Cors="true"/>
 <Route Url="/roles" Method="GET" Call="GetRoles" Cors="true"/>
 <Route Url="/roles" Method="POST" Call="CreateRole" Cors="true"/>
 <Route Url="/roles" Method="PUT" Call="ModifyRole" Cors="true"/>
