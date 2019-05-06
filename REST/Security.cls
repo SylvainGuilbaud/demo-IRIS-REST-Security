@@ -10,21 +10,31 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/userDelete/:username" Method="DELETE" Call="DeleteUser" Cors="true"/>
 <Route Url="/users" Method="GET" Call="GetUsers" Cors="true"/>
 <Route Url="/roles" Method="GET" Call="GetRoles" Cors="true"/>
+<Route Url="/roleAdd" Method="POST" Call="CreateRole" Cors="true"/>
+<Route Url="/roleModify/:rolename" Method="PUT" Call="ModifyRole" Cors="true"/>
+<Route Url="/roleDelete/:rolename" Method="DELETE" Call="DeleteRole" Cors="true"/>
 </Routes>
+
 }
 
 ClassMethod version() As %Status
 {
+ try {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set data={}
 	set data.version=$system.Version.GetVersion()
+	set data.ts=$zdt($horolog,3)
 	write data.%ToJSON()
+	} catch e {
+		throw e
+	}
 	return sc
 }
 
 ClassMethod CreateUser() As %Status
 {
+ try {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set ns=$namespace
@@ -45,17 +55,19 @@ ClassMethod CreateUser() As %Status
 	set Properties("NameSpace")=json.NameSpace
 	set Properties("ExpirationDate")=json.ExpirationDate
 	set Properties("PhoneNumber")=json.PhoneNumber
-	SET sc=##class(Security.Users).Create(username,.Properties)
-	if 'sc {set data.errors="Failed to create user "_ username _" "_$system.Status.GetErrorText(sc)}
+	$$$ThrowOnError(##class(Security.Users).Create(username,.Properties))
 	set data.result=username _" successfully created"
-
 	write data.%ToJSON()
 	zn ns
+	} catch e {
+		throw e
+	}
 	return sc
 }
 
 ClassMethod ModifyUser(username As %String) As %Status
 {
+ try {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set ns=$namespace
@@ -75,12 +87,14 @@ ClassMethod ModifyUser(username As %String) As %Status
 	set Properties("NameSpace")=json.NameSpace
 	set Properties("ExpirationDate")=json.ExpirationDate
 	set Properties("PhoneNumber")=json.PhoneNumber
-	SET sc=##class(Security.Users).Modify(username,.Properties)
-	if 'sc {set data.errors="Failed to modify user "_ username _" "_$system.Status.GetErrorText(sc)}
+	$$$ThrowOnError(##class(Security.Users).Modify(username,.Properties))
 	set data.result=username _" successfully modified"
 
 	write data.%ToJSON()
 	zn ns
+	} catch e {
+		throw e
+	}
 	return sc
 }
 
@@ -91,10 +105,8 @@ ClassMethod DeleteUser(username As %String) As %Status
 	set ns=$namespace
 	set data={}
 	zn "%sys"
-	SET sc=##class(Security.Users).Delete(username)
-	if 'sc {set data.errors="Failed to delete user "_username_" "_$system.Status.GetErrorText(sc)}
+	$$$ThrowOnError(##class(Security.Users).Delete(username))
 	set data.result=username_" successfully deleted"
-
 	write data.%ToJSON()
 	zn ns
 	return sc
@@ -102,49 +114,123 @@ ClassMethod DeleteUser(username As %String) As %Status
 
 ClassMethod GetUsers() As %Status
 {
+ try {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set ns=$namespace
 	set data=[]
 	zn "%sys"
-
 	SET stmt=##class(%SQL.Statement).%New()
-	SET status = stmt.%PrepareClassQuery("Security.Users","List")
-    IF 'status {set data.error="%Prepare failed:"_$System.Status.DisplayError(status) QUIT}
-    SET rset = stmt.%Execute("*","*")
+	$$$ThrowOnError(stmt.%PrepareClassQuery("Security.Users","List"))
+    SET rset = stmt.%Execute("*")
     While rset.%Next() {
     	set user={}
-        set user.name=rset.%Get("Name")
-        set user.role=rset.%Get("Roles")
+        set user.Name=rset.%Get("Name")
+        set user.Roles=rset.%Get("Roles")
+        set user.Enabled=rset.%Get("Enabled")
+        set user.LastLoginTime=rset.%Get("LastLoginTime")
         do data.%Push(user)
     }
     kill rset
 	write data.%ToJSON()
 	zn ns
+	} catch e {
+		throw e
+	}
 	return sc
 }
 
 ClassMethod GetRoles() As %Status
 {
+ try {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set ns=$namespace
 	set data=[]
 	zn "%sys"
-
 	SET stmt=##class(%SQL.Statement).%New()
-	SET status = stmt.%PrepareClassQuery("Security.Roles","List")
-    IF 'status {set data.error="%Prepare failed:"_$System.Status.DisplayError(status) QUIT}
-    SET rset = stmt.%Execute("*","*")
+	$$$ThrowOnError(stmt.%PrepareClassQuery("Security.Roles","ListAll"))
+    SET rset = stmt.%Execute("*")
     While rset.%Next() {
     	set role={}
         set role.roleName=rset.%Get("Name")
+        set role.Description=rset.%Get("Description")
+        set role.Resources=rset.%Get("Resources")
         set role.GrantedRoles=rset.%Get("GrantedRoles")
         do data.%Push(role)
     }
     kill rset
 	write data.%ToJSON()
 	zn ns
+	} catch e {
+		throw e
+	}
+	return sc
+}
+ClassMethod CreateRole() As %Status
+{
+ try {
+	set sc=$$$OK
+	set %response.ContentType="application/json"
+	set ns=$namespace
+	set data={}
+	zn "%sys"
+	set request=%request.Content.Read()
+	set json={}.%FromJSON(request)
+	set Name=json.Name
+	set Description=json.Description
+	set Resources=json.Resources
+	set GrantedRoles=json.GrantedRoles
+	$$$ThrowOnError(##class(Security.Roles).Create(Name,Description,Resources,GrantedRoles))
+	set data.result=Name _" successfully created"
+	write data.%ToJSON()
+	zn ns
+	} catch e {
+		throw e
+	}
+	return sc
+}
+
+ClassMethod ModifyRole(rolename As %String) As %Status
+{
+ try {
+	set sc=$$$OK
+	set %response.ContentType="application/json"
+	set ns=$namespace
+	set data={}
+	zn "%sys"
+	set request=%request.Content.Read()
+	set json={}.%FromJSON(request)
+	set Properties("Name")=json.Name
+	set Properties("Description")=json.Description
+	set Properties("Resources")=json.Resources
+	set Properties("GrantedRoles")=json.GrantedRoles
+	$$$ThrowOnError(##class(Security.Roles).Modify(rolename,.Properties))
+	set data.result=rolename _" successfully modified"
+
+	write data.%ToJSON()
+	zn ns
+	} catch e {
+		throw e
+	}
+	return sc
+}
+
+ClassMethod DeleteRole(rolename As %String) As %Status
+{
+ try {
+	set sc=$$$OK
+	set %response.ContentType="application/json"
+	set ns=$namespace
+	set data={}
+	zn "%sys"
+	$$$ThrowOnError(##class(Security.Roles).Delete(rolename))
+	set data.result=rolename _" successfully deleted"
+	write data.%ToJSON()
+	zn ns
+	} catch e {
+		throw e
+	}
 	return sc
 }
 
