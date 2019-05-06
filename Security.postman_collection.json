@@ -13,7 +13,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -30,12 +30,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:12001/workshop/users",
+					"raw": "http://localhost:52773/workshop/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "12001",
+					"port": "52773",
 					"path": [
 						"workshop",
 						"users"
@@ -52,7 +52,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -91,7 +91,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -130,7 +130,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -169,7 +169,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -208,7 +208,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -247,7 +247,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -286,7 +286,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
@@ -325,7 +325,7 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "AAA",
+							"value": "SYS",
 							"type": "string"
 						},
 						{
