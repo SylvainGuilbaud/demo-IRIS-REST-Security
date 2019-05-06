@@ -16,7 +16,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 </Routes>
 
 }
-
+/// get version
 ClassMethod version() As %Status
 {
  try {
