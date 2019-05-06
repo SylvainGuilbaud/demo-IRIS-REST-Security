@@ -5,16 +5,15 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
 <Route Url="/" Method="GET" Call="version" Cors="true"/>
-<Route Url="/userAdd" Method="POST" Call="CreateUser" Cors="true"/>
-<Route Url="/userModify/:username" Method="PUT" Call="ModifyUser" Cors="true"/>
-<Route Url="/userDelete/:username" Method="DELETE" Call="DeleteUser" Cors="true"/>
+<Route Url="/users" Method="POST" Call="CreateUser" Cors="true"/>
+<Route Url="/users" Method="PUT" Call="ModifyUser" Cors="true"/>
+<Route Url="/users" Method="DELETE" Call="DeleteUser" Cors="true"/>
 <Route Url="/users" Method="GET" Call="GetUsers" Cors="true"/>
 <Route Url="/roles" Method="GET" Call="GetRoles" Cors="true"/>
-<Route Url="/roleAdd" Method="POST" Call="CreateRole" Cors="true"/>
-<Route Url="/roleModify/:rolename" Method="PUT" Call="ModifyRole" Cors="true"/>
-<Route Url="/roleDelete/:rolename" Method="DELETE" Call="DeleteRole" Cors="true"/>
+<Route Url="/roles" Method="POST" Call="CreateRole" Cors="true"/>
+<Route Url="/roles" Method="PUT" Call="ModifyRole" Cors="true"/>
+<Route Url="/roles" Method="DELETE" Call="DeleteRole" Cors="true"/>
 </Routes>
-
 }
 /// get version
 ClassMethod version() As %Status
@@ -65,7 +64,7 @@ ClassMethod CreateUser() As %Status
 	return sc
 }
 
-ClassMethod ModifyUser(username As %String) As %Status
+ClassMethod ModifyUser() As %Status
 {
  try {
 	set sc=$$$OK
@@ -87,8 +86,8 @@ ClassMethod ModifyUser(username As %String) As %Status
 	set Properties("NameSpace")=json.NameSpace
 	set Properties("ExpirationDate")=json.ExpirationDate
 	set Properties("PhoneNumber")=json.PhoneNumber
-	$$$ThrowOnError(##class(Security.Users).Modify(username,.Properties))
-	set data.result=username _" successfully modified"
+	$$$ThrowOnError(##class(Security.Users).Modify(json.Name,.Properties))
+	set data.result=json.Name _" successfully modified"
 
 	write data.%ToJSON()
 	zn ns
@@ -98,15 +97,17 @@ ClassMethod ModifyUser(username As %String) As %Status
 	return sc
 }
 
-ClassMethod DeleteUser(username As %String) As %Status
+ClassMethod DeleteUser() As %Status
 {
 	set sc=$$$OK
 	set %response.ContentType="application/json"
 	set ns=$namespace
 	set data={}
 	zn "%sys"
-	$$$ThrowOnError(##class(Security.Users).Delete(username))
-	set data.result=username_" successfully deleted"
+	set request=%request.Content.Read()
+	set json={}.%FromJSON(request)
+	$$$ThrowOnError(##class(Security.Users).Delete(json.Name))
+	set data.result=json.Name_" successfully deleted"
 	write data.%ToJSON()
 	zn ns
 	return sc
@@ -191,7 +192,7 @@ ClassMethod CreateRole() As %Status
 	return sc
 }
 
-ClassMethod ModifyRole(rolename As %String) As %Status
+ClassMethod ModifyRole() As %Status
 {
  try {
 	set sc=$$$OK
@@ -205,8 +206,8 @@ ClassMethod ModifyRole(rolename As %String) As %Status
 	set Properties("Description")=json.Description
 	set Properties("Resources")=json.Resources
 	set Properties("GrantedRoles")=json.GrantedRoles
-	$$$ThrowOnError(##class(Security.Roles).Modify(rolename,.Properties))
-	set data.result=rolename _" successfully modified"
+	$$$ThrowOnError(##class(Security.Roles).Modify(json.Name,.Properties))
+	set data.result=json.Name _" successfully modified"
 
 	write data.%ToJSON()
 	zn ns
@@ -216,7 +217,7 @@ ClassMethod ModifyRole(rolename As %String) As %Status
 	return sc
 }
 
-ClassMethod DeleteRole(rolename As %String) As %Status
+ClassMethod DeleteRole() As %Status
 {
  try {
 	set sc=$$$OK
@@ -224,8 +225,10 @@ ClassMethod DeleteRole(rolename As %String) As %Status
 	set ns=$namespace
 	set data={}
 	zn "%sys"
-	$$$ThrowOnError(##class(Security.Roles).Delete(rolename))
-	set data.result=rolename _" successfully deleted"
+	set request=%request.Content.Read()
+	set json={}.%FromJSON(request)
+	$$$ThrowOnError(##class(Security.Roles).Delete(json.Name))
+	set data.result=json.Name _" successfully deleted"
 	write data.%ToJSON()
 	zn ns
 	} catch e {
