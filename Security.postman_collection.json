@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "6a83dbaa-cc1e-45cc-8a7b-331452495d97",
+		"name": "Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "USERS",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:12001/workshop/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "12001",
+					"path": [
+						"workshop",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"user1\",\n\t            \"Roles\":\"role1\",\n\t            \"Password\":\"abc\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"user2\",\n\t            \"Roles\":\"%Developer,%Operator,%All\",\n\t            \"Password\":\"abc\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"user1\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ROLES",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add role",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"Role2\",\n\t            \"Description\":\"\",\n\t            \"Resources\":\"%DB_%DEFAULT:RW,%Development:U\",\n\t            \"GrantedRoles\":\"%EnsRole_WebDeveloper,%EnsRole_Operator\"\n\t            \n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify role",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"Role2\",\n\t            \"Description\":\"Role 2 description\",\n\t            \"Resources\":\"%DB_%DEFAULT:RW,%Development:U\",\n\t            \"GrantedRoles\":\"%EnsRole_WebDeveloper,%EnsRole_Operator\"\n\t            \n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete role",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t            \"Name\": \"Role2\",\n\t            \"Description\":\"Role 2 description\",\n\t            \"Resources\":\"%DB_%DEFAULT:RW,%Development:U\",\n\t            \"GrantedRoles\":\"%EnsRole_WebDeveloper,%EnsRole_Operator\"\n\t            \n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "version",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "AAA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "_system",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:52773/workshop/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"workshop",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
